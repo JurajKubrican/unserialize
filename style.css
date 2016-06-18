@@ -1,0 +1,11 @@
+#result table{
+    border:1px solid black;
+    margin:1px;
+}
+#result table thead{
+    background-color: #090;
+}
+#result td{
+    border:1px dotted appworkspace;
+    border-color: appworkspace;
+}
