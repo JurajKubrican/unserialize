@@ -50,13 +50,10 @@ $data = $obj;
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <textarea id="result-php" class="form-control" rows="10"></textarea>
                 </div>
-                <div class="col-sm-3">
-                    <textarea id="result-js" class="form-control" rows="10"></textarea>
-                </div>
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <textarea id="result-json" class="form-control" rows="10"></textarea>
                 </div>
             </div>

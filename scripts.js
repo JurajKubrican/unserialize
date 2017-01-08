@@ -33,51 +33,50 @@ function traverse(data, arrKey) {
 
 function traversePHP(data, tabs) {
   var result = "";
-  if(typeof (tabs) !== 'string' ){
+  if (typeof (tabs) !== 'string') {
     tabs = '';
   }
   if (data.constructor === Array || data.constructor === Object) {
-    result = tabs + ( (data.constructor === Object) ? '(object) ' : '' ) +'array(\n';
+    result = tabs + ((data.constructor === Object) ? '(object) ' : '') + 'array(\n';
 
-    tabs +='  ';
+    tabs += '  ';
     var i = 0;
     for (var key in data) {
       i++;
-      console.log(tabs.length,i);
-      if (!data.hasOwnProperty(key) || typeof(data[key]) === 'undefined')
+      //console.log(tabs.length, i);
+      if (!data.hasOwnProperty(key) || typeof (data[key]) === 'undefined')
         continue;
-      var next = traversePHP( data[key], tabs);
-      if(next){
-        result += tabs + '\'' + key + '\' => '+ traversePHP( data[key], tabs) + ',\n';
+      var next = traversePHP(data[key], tabs);
+      if (next) {
+        result += tabs + '\'' + key + '\' => ' + traversePHP(data[key], tabs) + ',\n';
       }
 
     }
     tabs = tabs.substr(2);
 
     result += tabs + ')';
-    console.log(result);
     return result;
 
-  } else if (typeof (data) == 'string' ) {
-    return '\'' + data.replace(/'/g,"\\'") + '\'';
-  } else if( typeof (data) == 'number' ){
-    return  data ;
+  } else if (typeof (data) == 'string') {
+    return '\'' + data.replace(/'/g, "\\'") + '\'';
+  } else if (typeof (data) == 'number') {
+    return  data;
   }
 }
 
 /*
-function parseVarDump( inputData ){
-  var lines = inputData.split('\n');
-  for(i in lines){
-    if(lines[i].trim().match(/^string/)){
-
-    }
-
-  }
-
-  resultData = lines
-  return resultData;
-}*/
+ function parseVarDump( inputData ){
+ var lines = inputData.split('\n');
+ for(i in lines){
+ if(lines[i].trim().match(/^string/)){
+ 
+ }
+ 
+ }
+ 
+ resultData = lines
+ return resultData;
+ }*/
 
 
 function doTheThing() {
@@ -101,9 +100,9 @@ function doTheThing() {
   }
 
 
-  if(dataType == 'ERROR'){
+  if (dataType == 'ERROR') {
     rawData = inputData.split("\n");
-    traverse( rawData );
+    traverse(rawData);
   }
 
   $('#status').html(dataType);
@@ -116,10 +115,11 @@ function doTheThing() {
 
 }
 
-$('#source').keyup(function () {
-  doTheThing();
-})
+
 
 $(document).ready(function () {
   doTheThing();
+  $('#source').keyup(function () {
+    doTheThing();
+  })
 })
