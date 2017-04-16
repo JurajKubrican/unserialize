@@ -15,7 +15,7 @@ const TypeWrapper = styled.td`
 class Visualizer extends Component {
   render() {
     let data = this.props.data;
-    let type = typeof (data);
+    let type = typeof(data);
     let components = []
     let key = 0;
     switch(type){
@@ -25,30 +25,22 @@ class Visualizer extends Component {
             continue;
           components.push(<tr key={key++}><td key="0">{i}</td><td key="1"><Visualizer  data={data[i]} /></td></tr>) ;
         }
-        break
+        if(data instanceof Array){
+          type = 'array';
+        }
+        return (
+          <Wrapper className="Visualizer">
+            <tbody>
+            <tr><td></td><TypeWrapper>{type}</TypeWrapper></tr>
+            {components}
+            </tbody>
+          </Wrapper>) ;
       case 'string':
-        components.push(<tr key={key++}><td key="0"></td><td key="1">{data}</td></tr>);
-        break;
       case 'number':
-        components.push(<tr key={key++}><td key="0"></td><td key="1">{data}</td></tr>);
-        break;
       default:
-
-        break;
+        return (<span>{data}</span>);
     }
 
-
-    console.log(type);
-
-    return (
-      <Wrapper className="Visualizer">
-        <tbody>
-        <tr><td></td><TypeWrapper>{type}</TypeWrapper></tr>
-        {components}
-        </tbody>
-
-      </Wrapper>
-    );
   }
 }
 
