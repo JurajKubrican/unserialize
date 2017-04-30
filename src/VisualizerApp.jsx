@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Visualizer from './Visualizer.js';
+import Visualizer from './Visualizer.jsx';
 import './App.css';
 
 import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -47,7 +47,7 @@ const style = {
 
 }
 
-class App extends Component {
+class VisualizerApp extends Component {
 
     constructor(){
         injectTapEventPlugin();
@@ -141,7 +141,7 @@ class App extends Component {
     parseText(format){
         let state = this.state;
         if(format){
-          state.format = format;
+            state.format = format;
         }
 
         if(state.format.mode === 'auto'){
@@ -192,15 +192,15 @@ class App extends Component {
         let input = false;
         if(this.state.source === 'text'){
             input = (<formgroup>
-              <textarea name="text" id="text" cols="30" rows="10"  onChange={(e) => {this.setText(e)}} value={this.state.text}/>
+                <textarea name="text" id="text" cols="30" rows="10"  onChange={(e) => {this.setText(e)}} value={this.state.text}/>
             </formgroup>);
         }else{
-          // let width = {'width':this.state.curTime + 'px'};
+            // let width = {'width':this.state.curTime + 'px'};
             input = ( <formgroup>
-              <TextField hintText="URL" value={this.state.url} onChange={(e) => {this.setUrl(e)}} id="url"/>
-              <RaisedButton style={style.button} key="0"  label="Refresh"  onTouchTap={()=>{this.fetchUrl()}} />
-              {/*<Toggle label="AutoRefesh" value={this.state.timer} onChange={(val)=>this.setVal('timer',val)}/>*/}
-              {/*<div style={style.loader} ><div style={{...style.loaderInside,...width}}> </div></div>*/}
+                <TextField hintText="URL" value={this.state.url} onChange={(e) => {this.setUrl(e)}} id="url"/>
+                <RaisedButton style={style.button} key="0"  label="Refresh"  onTouchTap={()=>{this.fetchUrl()}} />
+                {/*<Toggle label="AutoRefesh" value={this.state.timer} onChange={(val)=>this.setVal('timer',val)}/>*/}
+                {/*<div style={style.loader} ><div style={{...style.loaderInside,...width}}> </div></div>*/}
 
             </formgroup>);
         }
@@ -208,31 +208,31 @@ class App extends Component {
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-              <div style={style.flexCol}>
-                <Paper style={style.flexRow}>
-                  <div style={style.flexCol}>
-                    <RaisedButton style={style.button} key="0" primary={this.state.source==='text'} label="Text"  onTouchTap={()=>{this.setVal('source','text')}} />
-                    <RaisedButton style={style.button} key="1" primary={this.state.source==='url'}  label="URL" onTouchTap={()=>{this.setVal('source','url')}} />
-                  </div>
-                  <div style={style.panel}>
-                      {input}
-                  </div>
-                </Paper>
-                <Paper style={style.flexRow}>
-                  <div style={style.flexCol}>
-                    <RaisedButton style={style.button} key="2" primary={this.state.format.mode==='auto'} label="AUTO"  onTouchTap={()=>{this.parseText({mode:'auto',type:'json'})}} />
-                    <RaisedButton style={style.button} key="3" secondary={this.state.format.type==='json'} label="JSON"  onTouchTap={()=>{this.parseText({mode:'manu',type:'json'})}} />
-                    <RaisedButton style={style.button} key="4" secondary={this.state.format.type==='php'}  label="PHP" onTouchTap={()=>{this.parseText({mode:'manu',type:'php'})}} />
-                    <RaisedButton style={style.button} key="5" secondary={this.state.format.type==='xml'} label="XML"  onTouchTap={()=>{this.parseText({mode:'manu',type:'xml'})}} />
-                  </div>
-                  <div style={style.panel}>
-                    <Visualizer data={this.state.data}/>
-                  </div>
-                </Paper>
-              </div>
+                <div style={style.flexCol}>
+                    <Paper style={style.flexRow}>
+                        <div style={style.flexCol}>
+                            <RaisedButton style={style.button} key="0" primary={this.state.source==='text'} label="Text"  onTouchTap={()=>{this.setVal('source','text')}} />
+                            <RaisedButton style={style.button} key="1" primary={this.state.source==='url'}  label="URL" onTouchTap={()=>{this.setVal('source','url')}} />
+                        </div>
+                        <div style={style.panel}>
+                            {input}
+                        </div>
+                    </Paper>
+                    <Paper style={style.flexRow}>
+                        <div style={style.flexCol}>
+                            <RaisedButton style={style.button} key="2" primary={this.state.format.mode==='auto'} label="AUTO"  onTouchTap={()=>{this.parseText({mode:'auto',type:'json'})}} />
+                            <RaisedButton style={style.button} key="3" secondary={this.state.format.type==='json'} label="JSON"  onTouchTap={()=>{this.parseText({mode:'manu',type:'json'})}} />
+                            <RaisedButton style={style.button} key="4" secondary={this.state.format.type==='php'}  label="PHP" onTouchTap={()=>{this.parseText({mode:'manu',type:'php'})}} />
+                            <RaisedButton style={style.button} key="5" secondary={this.state.format.type==='xml'} label="XML"  onTouchTap={()=>{this.parseText({mode:'manu',type:'xml'})}} />
+                        </div>
+                        <div style={style.panel}>
+                            <Visualizer data={this.state.data}/>
+                        </div>
+                    </Paper>
+                </div>
             </MuiThemeProvider>
         );
     }
 }
 
-export default App;
+export default VisualizerApp;

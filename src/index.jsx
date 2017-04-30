@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import VisualizerApp from './VisualizerApp.jsx';
 import './index.css';
 
 ReactDOM.render(
-  <App />,
+  <VisualizerApp />,
   document.getElementById('root')
 );
