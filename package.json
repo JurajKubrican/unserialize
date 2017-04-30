@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "inline-style-prefixer": "^3.0.2",
     "locutus": "^2.0.8",
     "material-ui": "^0.17.3",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^2.0.1",
     "styled-components": "^1.4.4",
     "xml2js": "^0.4.17"
