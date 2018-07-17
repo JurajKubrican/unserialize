@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import VisualizerApp from "./components/VisualizerApp";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<VisualizerApp />, document.getElementById('root'));
 registerServiceWorker();

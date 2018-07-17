@@ -1,58 +1,49 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Visualizer from './Visualizer.jsx';
-import './App.css';
 
-import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import RaisedButton from 'material-ui/RaisedButton';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import TextField from 'material-ui/TextField';
-// import Toggle from 'material-ui/Toggle';
-import Paper from 'material-ui/Paper';
-
-
-import unserialize from  'locutus/php/var/unserialize';
+import Serialize from 'php-serialize'
 import {parseString} from 'xml2js';
+import TextField from "@material-ui/core/es/TextField/TextField";
+import Button from "@material-ui/core/es/Button/Button";
+import Paper from "@material-ui/core/es/Paper/Paper";
 
 const style = {
-    flexRow:{
+    flexRow: {
         display: 'flex',
         flexDirection: 'row',
     },
-    flexCol:{
+    flexCol: {
         display: 'flex',
         flexDirection: 'column',
     },
-    button:{
+    button: {
         display: 'block',
         marginBottom: '5px',
         marginRight: '10px',
     },
-    panel:{
-        minHeight:'60px',
+    panel: {
+        minHeight: '60px',
     },
-    loader:{
-        width:'200px',
-        height:'20px',
-        position:'relative',
+    loader: {
+        width: '200px',
+        height: '20px',
+        position: 'relative',
     },
-    loaderInside:{
-        height:'20px',
-        position:'absolute',
-        backgroundColor:'red'
+    loaderInside: {
+        height: '20px',
+        position: 'absolute',
+        backgroundColor: 'red'
     },
 
-}
+};
 
 class VisualizerApp extends Component {
 
-    constructor(){
-        injectTapEventPlugin();
+    constructor() {
         const data = {
-            one:1,
-            two:"two",
-            three:[
+            one: 1,
+            two: "two",
+            three: [
                 'three1',
                 'three2',
                 'three3'
@@ -60,112 +51,97 @@ class VisualizerApp extends Component {
         };
 
         let state = {
-            url:'',
-            text:JSON.stringify(data),
-            data:data,
-            curTime:0,
-            timer:false,
-            source:'text',
-            format:{
-                mode:'auto',
-                type:'json'
+            url: '',
+            text: JSON.stringify(data),
+            data: data,
+            curTime: 0,
+            timer: false,
+            source: 'text',
+            format: {
+                mode: 'auto',
+                type: 'json'
             }
-        }
+        };
         super();
         this.state = state;
+
+        this.fetchUrl = this.fetchUrl.bind(this)
     }
 
-    fetchUrl(){
-        console.log(this.state.url);
-
-
-        fetch(this.state.url,{
+    fetchUrl() {
+        fetch(this.state.url, {
             method: 'GET',
+        }).then(function (response) {
+            return response.text()
+
+        }).then(function (text) {
+            let state = this.state;
+            state.text = text;
+            this.setState(state);
+            this.parseText();
         })
-            .then(function(response) {
-                return response.text()
-                    .then(function(text){
-                        let state  = this.state;
-                        state.text = text;
-                        this.setState(state);
-                        this.parseText();
-                    }.bind(this))
-            }.bind(this));
     }
 
 
-    // countdown(){
-    //     if(this.state.source !== 'url')
-    //         return;
-    //
-    //     let state = this.state;
-    //     if( state.curTime <= 0 ){
-    //         this.fetch(this.state.url,"GET",[]);
-    //         state.curTime = 100;
-    //     }else{
-    //         state.curTime --;
-    //     }
-    //     this.setState(state);
-    // }
-    //
-    // componentDidMount() {
-    //     setInterval(() => {
-    //         this.countdown()
-    //     }, 50);
-    // }
-
-
-    setVal(name,value){
-        let state = this.state;
-        state[name] = value;
-        this.setState(state);
+    setVal(name, value) {
+        this.setState({[name]: value});
     }
 
-    setUrl(e){
-        let state = this.state;
-        state.url = e.target.value;
-        state.source = 'url';
-        this.setState(state);
+    setUrl(e) {
+        this.setState({text: e.target.value, source: ''});
     }
 
-    setText(e){
-        let state = this.state;
-        state.text = e.target.value;
-        state.source = 'text';
-        this.setState(state);
+    setText(e) {
+        this.setState({text: e.target.value, source: 'text'});
         this.parseText();
     }
 
-    parseText(format){
+    parseText(format) {
         let state = this.state;
-        if(format){
+        if (format) {
             state.format = format;
         }
 
-        if(state.format.mode === 'auto'){
-            try{
+        if (state.format.mode === 'auto') {
+            let succ = false;
+            try {
                 state.data = JSON.parse(state.text);
-                state.format.type ='json';
-            }catch(e){
-                try{
-                    state.data = unserialize(state.text);
-                    state.format.type ='php';
-                }catch(e){
-                    parseString(state.text, function (err, result) {
-                        state.data = result;
-                    });
-                    state.format.type ='xml';
+                state.format.type = 'json';
+                succ = true;
+            } catch (e) {
+            }
+
+            if (!succ) {
+                try {
+                    state.data = Serialize.unserialize(state.text);
+                    state.format.type = 'php';
+                    succ = true;
+                } catch (e) {
+
                 }
             }
 
-        }else{
-            try{
-                switch(state.format.type){
+            if (!succ) {
+                try {
+                    parseString(state.text, function (err, result) {
+                        state.data = result;
+                    });
+                    state.format.type = 'xml';
+                    succ = true
+                } catch (e) {
+
+                }
+            }
+        }
+
+        else {
+            try {
+                switch (state.format.type) {
                     case'json':
                         state.data = JSON.parse(state.text);
                         break;
                     case'php':
-                        state.data = unserialize(state.text);
+                        state.data = Serialize.unserialize(state.text);
                         break;
                     case'xml':
                         parseString(state.text, function (err, result) {
@@ -176,7 +152,7 @@ class VisualizerApp extends Component {
                         state.data = false;
                         break;
                 }
-            }catch(e){
+            } catch (e) {
                 state.data = ['error'];
             }
         }
@@ -188,47 +164,70 @@ class VisualizerApp extends Component {
     render() {
 
         let input = false;
-        if(this.state.source === 'text'){
+        if (this.state.source === 'text') {
             input = (<formgroup>
-                <textarea name="text" id="text" cols="30" rows="10"  onChange={(e) => {this.setText(e)}} value={this.state.text}/>
+                <textarea name="text" id="text" cols="30" rows="10" onChange={(e) => {
+                    this.setText(e)
+                }} value={this.state.text}/>
             </formgroup>);
-        }else{
+        } else {
             // let width = {'width':this.state.curTime + 'px'};
-            input = ( <formgroup>
-                <TextField hintText="URL" value={this.state.url} onChange={(e) => {this.setUrl(e)}} id="url"/>
-                <RaisedButton style={style.button} key="0"  label="Refresh"  onTouchTap={()=>{this.fetchUrl()}} />
-                {/*<Toggle label="AutoRefesh" value={this.state.timer} onChange={(val)=>this.setVal('timer',val)}/>*/}
-                {/*<div style={style.loader} ><div style={{...style.loaderInside,...width}}> </div></div>*/}
-
+            input = (<formgroup>
+                <TextField hintText="URL" value={this.state.url} onChange={(e) => {
+                    this.setUrl(e)
+                }} id="url"/>
+                <Button style={style.button} key="0" label="Refresh" onClick={() => {
+                    this.fetchUrl()
+                }}/>
             </formgroup>);
         }
 
 
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-                <div style={style.flexCol}>
-                    <Paper style={style.flexRow}>
-                        <div style={style.flexCol}>
-                            <RaisedButton style={style.button} key="0" primary={this.state.source==='text'} label="Text"  onTouchTap={()=>{this.setVal('source','text')}} />
-                            <RaisedButton style={style.button} key="1" primary={this.state.source==='url'}  label="URL" onTouchTap={()=>{this.setVal('source','url')}} />
-                        </div>
-                        <div style={style.panel}>
-                            {input}
-                        </div>
-                    </Paper>
-                    <Paper style={style.flexRow}>
-                        <div style={style.flexCol}>
-                            <RaisedButton style={style.button} key="2" primary={this.state.format.mode==='auto'} label="AUTO"  onTouchTap={()=>{this.parseText({mode:'auto',type:'json'})}} />
-                            <RaisedButton style={style.button} key="3" secondary={this.state.format.type==='json'} label="JSON"  onTouchTap={()=>{this.parseText({mode:'manu',type:'json'})}} />
-                            <RaisedButton style={style.button} key="4" secondary={this.state.format.type==='php'}  label="PHP" onTouchTap={()=>{this.parseText({mode:'manu',type:'php'})}} />
-                            <RaisedButton style={style.button} key="5" secondary={this.state.format.type==='xml'} label="XML"  onTouchTap={()=>{this.parseText({mode:'manu',type:'xml'})}} />
-                        </div>
-                        <div style={style.panel}>
-                            <Visualizer data={this.state.data}/>
-                        </div>
-                    </Paper>
-                </div>
-            </MuiThemeProvider>
+            <div style={style.flexCol}>
+                <Paper style={style.flexRow}>
+                    <div style={style.flexCol}>
+                        <Button style={style.button} color={this.state.source === 'text' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.setVal('source', 'text')
+                                }}>Text</Button>
+                        <Button style={style.button} color={this.state.source === 'url' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.setVal('source', 'url')
+                                }}>URL</Button>
+                    </div>
+                    <div style={style.panel}>
+                        {input}
+                    </div>
+                </Paper>
+                <Paper style={style.flexRow}>
+                    <div style={style.flexCol}>
+                        <Button style={style.button}
+                                color={this.state.format.mode === 'auto' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.parseText({mode: 'auto', type: 'json'})
+                                }}>AUTO</Button>
+                        <Button style={style.button}
+                                color={this.state.format.mode === 'json' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.parseText({mode: 'manu', type: 'json'})
+                                }}>JSON</Button>
+                        <Button style={style.button}
+                                color={this.state.format.mode === 'php' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.parseText({mode: 'manu', type: 'php'})
+                                }}>PHP</Button>
+                        <Button style={style.button}
+                                color={this.state.format.mode === 'xml' ? "primary" : "secondary"}
+                                onClick={() => {
+                                    this.parseText({mode: 'manu', type: 'xml'})
+                                }}>XML</Button>
+                    </div>
+                    <div style={style.panel}>
+                        <Visualizer data={this.state.data}/>
+                    </div>
+                </Paper>
+            </div>
         );
     }
 }

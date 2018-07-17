@@ -16,7 +16,7 @@ class Visualizer extends Component {
     render() {
         let data = this.props.data;
         let type = typeof(data);
-        let components = []
+        let components = [];
         let key = 0;
         switch (type) {
             case 'object':
@@ -35,7 +35,7 @@ class Visualizer extends Component {
                     <table style={style.table} className="Visualizer">
                         <tbody>
                         <tr>
-                            <td></td>
+                            <td> </td>
                             <td style={style.typeWrapper}>{type}</td>
                         </tr>
                         {components}
