@@ -12,8 +12,6 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 
 
-//import styled from 'styled-components';
-
 import unserialize from  'locutus/php/var/unserialize';
 import {parseString} from 'xml2js';
 
