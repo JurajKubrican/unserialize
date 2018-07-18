@@ -7,6 +7,9 @@ import Button from "@material-ui/core/es/Button/Button";
 import Paper from "@material-ui/core/es/Paper/Paper";
 
 
+import exampleData from './example.json'
+
+
 import strToObj from './strToObj'
 
 const style = {
@@ -26,59 +29,31 @@ const style = {
     panel: {
         minHeight: '60px',
     },
-    loader: {
-        width: '200px',
-        height: '20px',
-        position: 'relative',
-    },
-    loaderInside: {
-        height: '20px',
-        position: 'absolute',
-        backgroundColor: 'red'
-    },
-
 };
 
 class VisualizerApp extends Component {
 
     constructor() {
-        const data = {
-            one: 1,
-            two: "two",
-            three: [
-                'three1',
-                'three2',
-                'three3'
-            ]
-        };
-
-        let state = {
-            url: '',
-            text: JSON.stringify(data),
-            data: data,
-            curTime: 0,
-            timer: false,
-            source: 'text',
-            format: {
-                mode: 'auto',
-                type: 'json'
-            }
-        };
         super();
-        this.state = state;
+        this.state = {
+            url: '',
+            text: JSON.stringify(exampleData),
+            source: 'text',
+        };
 
-        this.fetchUrl = this.fetchUrl.bind(this)
-        this.setText = this.setText.bind(this)
+        this.fetchUrl = this.fetchUrl.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     fetchUrl() {
-        fetch(this.state.url, {
+        fetch('https://wt-kubrican_juraj-gmail_com-0.sandbox.auth0-extend.com/urlBounce?url=' + this.state.url, {
             method: 'GET',
-        }).then(function (response) {
-            return response.text()
-        }).then(function (text) {
-            this.setState({text: text});
-            this.parseText();
+        }).then((response) => {
+            return response.json()
+        }).then((data) => {
+            this.setState({text: data.text});
+        }).catch(() => {
+
         })
     }
 
@@ -87,49 +62,25 @@ class VisualizerApp extends Component {
         this.setState({[name]: value});
     }
 
-    setUrl(e) {
-        this.setState({text: e.target.value, source: ''});
-    }
-
-    setText(e) {
-        console.log(e.target.value);
-        this.setState({text: e.target.value, source: 'text'});
-        this.parseText();
-    }
-
-
-
-    parseText(format) {
-        let state = {}
-        if (format) {
-            state.format = format;
-        }
-
-        strToObj();
-
-
-
-        this.setState(state);
+    handleChange(e) {
+        this.setState({[e.target.name]: e.target.value});
     }
 
 
     render() {
-
+        const [data, format] = strToObj(this.state.text);
         let input = false;
+
         if (this.state.source === 'text') {
-            input = (<formgroup>
-                <textarea name="text" id="text" cols="30" rows="10" onChange={this.setText} value={this.state.text}/>
-            </formgroup>);
+            input = (<div>
+                <textarea name={"text"} cols="30" rows="10" onChange={this.handleChange} value={this.state.text}/>
+            </div>);
         } else {
             // let width = {'width':this.state.curTime + 'px'};
-            input = (<formgroup>
-                <TextField helperText="URL" value={this.state.url} onChange={(e) => {
-                    this.setUrl(e)
-                }} id="url"/>
-                <Button style={style.button} onClick={() => {
-                    this.fetchUrl()
-                }}>Refresh</Button>
-            </formgroup>);
+            input = (<div>
+                <TextField name={'url'} helperText="URL" value={this.state.url} onChange={this.handleChange}/>
+                <Button style={style.button} onClick={this.fetchUrl}>Refresh</Button>
+            </div>);
         }
 
 
@@ -151,30 +102,9 @@ class VisualizerApp extends Component {
                     </div>
                 </Paper>
                 <Paper style={style.flexRow}>
-                    <div style={style.flexCol}>
-                        <Button style={style.button}
-                                color={this.state.format.mode === 'auto' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.parseText({mode: 'auto', type: 'json'})
-                                }}>AUTO</Button>
-                        <Button style={style.button}
-                                color={this.state.format.mode === 'json' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.parseText({mode: 'manu', type: 'json'})
-                                }}>JSON</Button>
-                        <Button style={style.button}
-                                color={this.state.format.mode === 'php' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.parseText({mode: 'manu', type: 'php'})
-                                }}>PHP</Button>
-                        <Button style={style.button}
-                                color={this.state.format.mode === 'xml' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.parseText({mode: 'manu', type: 'xml'})
-                                }}>XML</Button>
-                    </div>
                     <div style={style.panel}>
-                        <Visualizer data={this.state.data}/>
+                        {format}
+                        <Visualizer data={data}/>
                     </div>
                 </Paper>
             </div>

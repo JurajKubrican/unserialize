@@ -3,7 +3,7 @@ import {parseString} from 'xml2js';
 
 
 const htmlspecialcharsDecode = (str) => {
-    if (typeof(str) == "string") {
+    if (typeof(str) === "string") {
         str = str.replace(/&gt;/ig, ">");
         str = str.replace(/&lt;/ig, "<");
         str = str.replace(/&#039;/g, "'");
@@ -26,19 +26,19 @@ export default (str) => {
         format = 'json';
     } catch (e) {
         try {
-            JSON.parse(this.htmlspecialcharsDecode(str));
-            format = 'xml';
+            JSON.parse(htmlspecialcharsDecode(str));
+            format = 'HTMLSpecialChars + json';
         } catch (e) {
 
 
             try {
                 data = Serialize.unserialize(str);
-                format = 'php';
+                format = 'php serialized';
             } catch (e) {
 
                 try {
-                    data = Serialize.unserialize(this.htmlspecialcharsDecode(str));
-                    format = 'php';
+                    data = Serialize.unserialize(htmlspecialcharsDecode(str));
+                    format = 'HTMLSpecialChars + php serialized';
                 } catch (e) {
 
                     try {
@@ -58,8 +58,8 @@ export default (str) => {
 
     }
 
-    return {
-        data: data,
-        format: format,
-    };
+    return [
+        data,
+        format,
+    ];
 }

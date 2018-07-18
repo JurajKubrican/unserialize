@@ -1,0 +1,9 @@
+{
+  "one": 1,
+  "two": "two",
+  "three": [
+    "three",
+    "three2",
+    "three3"
+  ]
+}
