@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import Visualizer from './Visualizer.jsx';
 
-import Serialize from 'php-serialize'
-import {parseString} from 'xml2js';
+
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Button from "@material-ui/core/es/Button/Button";
 import Paper from "@material-ui/core/es/Paper/Paper";
+
+
+import strToObj from './strToObj'
 
 const style = {
     flexRow: {
@@ -66,6 +68,7 @@ class VisualizerApp extends Component {
         this.state = state;
 
         this.fetchUrl = this.fetchUrl.bind(this)
+        this.setText = this.setText.bind(this)
     }
 
     fetchUrl() {
@@ -73,11 +76,8 @@ class VisualizerApp extends Component {
             method: 'GET',
         }).then(function (response) {
             return response.text()
-
         }).then(function (text) {
-            let state = this.state;
-            state.text = text;
-            this.setState(state);
+            this.setState({text: text});
             this.parseText();
         })
     }
@@ -92,70 +92,22 @@ class VisualizerApp extends Component {
     }
 
     setText(e) {
+        console.log(e.target.value);
         this.setState({text: e.target.value, source: 'text'});
         this.parseText();
     }
 
+
+
     parseText(format) {
-        let state = this.state;
+        let state = {}
         if (format) {
             state.format = format;
         }
 
-        if (state.format.mode === 'auto') {
-            let succ = false;
-            try {
-                state.data = JSON.parse(state.text);
-                state.format.type = 'json';
-                succ = true;
-            } catch (e) {
-            }
+        strToObj();
 
-            if (!succ) {
-                try {
-                    state.data = Serialize.unserialize(state.text);
-                    state.format.type = 'php';
-                    succ = true;
-                } catch (e) {
 
-                }
-            }
-
-            if (!succ) {
-                try {
-                    parseString(state.text, function (err, result) {
-                        state.data = result;
-                    });
-                    state.format.type = 'xml';
-                    succ = true
-                } catch (e) {
-
-                }
-            }
-        }
-
-        else {
-            try {
-                switch (state.format.type) {
-                    case'json':
-                        state.data = JSON.parse(state.text);
-                        break;
-                    case'php':
-                        state.data = Serialize.unserialize(state.text);
-                        break;
-                    case'xml':
-                        parseString(state.text, function (err, result) {
-                            state.data = result;
-                        });
-                        break;
-                    default:
-                        state.data = false;
-                        break;
-                }
-            } catch (e) {
-                state.data = ['error'];
-            }
-        }
 
         this.setState(state);
     }
@@ -166,19 +118,17 @@ class VisualizerApp extends Component {
         let input = false;
         if (this.state.source === 'text') {
             input = (<formgroup>
-                <textarea name="text" id="text" cols="30" rows="10" onChange={(e) => {
-                    this.setText(e)
-                }} value={this.state.text}/>
+                <textarea name="text" id="text" cols="30" rows="10" onChange={this.setText} value={this.state.text}/>
             </formgroup>);
         } else {
             // let width = {'width':this.state.curTime + 'px'};
             input = (<formgroup>
-                <TextField hintText="URL" value={this.state.url} onChange={(e) => {
+                <TextField helperText="URL" value={this.state.url} onChange={(e) => {
                     this.setUrl(e)
                 }} id="url"/>
-                <Button style={style.button} key="0" label="Refresh" onClick={() => {
+                <Button style={style.button} onClick={() => {
                     this.fetchUrl()
-                }}/>
+                }}>Refresh</Button>
             </formgroup>);
         }
 
