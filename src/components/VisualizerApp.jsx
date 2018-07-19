@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Visualizer from './Visualizer.jsx';
 
-
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Button from "@material-ui/core/es/Button/Button";
 import Paper from "@material-ui/core/es/Paper/Paper";
@@ -38,7 +37,6 @@ class VisualizerApp extends Component {
         this.state = {
             url: '',
             text: JSON.stringify(exampleData),
-            source: 'text',
         };
 
         this.fetchUrl = this.fetchUrl.bind(this);
@@ -57,54 +55,32 @@ class VisualizerApp extends Component {
         })
     }
 
-
-    setVal(name, value) {
-        this.setState({[name]: value});
-    }
-
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value});
     }
 
-
     render() {
         const [data, format] = strToObj(this.state.text);
-        let input = false;
-
-        if (this.state.source === 'text') {
-            input = (<div>
-                <textarea name={"text"} cols="30" rows="10" onChange={this.handleChange} value={this.state.text}/>
-            </div>);
-        } else {
-            // let width = {'width':this.state.curTime + 'px'};
-            input = (<div>
-                <TextField name={'url'} helperText="URL" value={this.state.url} onChange={this.handleChange}/>
-                <Button style={style.button} onClick={this.fetchUrl}>Refresh</Button>
-            </div>);
-        }
-
 
         return (
             <div style={style.flexCol}>
-                <Paper style={style.flexRow}>
-                    <div style={style.flexCol}>
-                        <Button style={style.button} color={this.state.source === 'text' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.setVal('source', 'text')
-                                }}>Text</Button>
-                        <Button style={style.button} color={this.state.source === 'url' ? "primary" : "secondary"}
-                                onClick={() => {
-                                    this.setVal('source', 'url')
-                                }}>URL</Button>
+                <Paper>
+                    <div style={style.flexRow}>
+                        <div style={style.flexCol}>
+                            <textarea name={"text"} cols="30" rows="10" onChange={this.handleChange}
+                                      value={this.state.text}/>
+                        </div>
+                        <div style={style.flexCol}>
+                            <TextField name={'url'} helperText="URL" value={this.state.url}
+                                       onChange={this.handleChange}/>
+                            <Button style={style.button} onClick={this.fetchUrl}>Refresh</Button>
+                        </div>
                     </div>
-                    <div style={style.panel}>
-                        {input}
-                    </div>
-                </Paper>
-                <Paper style={style.flexRow}>
-                    <div style={style.panel}>
-                        {format}
-                        <Visualizer data={data}/>
+                    <div style={style.flexRow}>
+                        <div style={style.panel}>
+                            {format}
+                            <Visualizer data={data}/>
+                        </div>
                     </div>
                 </Paper>
             </div>
