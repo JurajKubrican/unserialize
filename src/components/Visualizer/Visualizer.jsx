@@ -11,12 +11,11 @@ const style = {
 };
 
 
-
 class Visualizer extends Component {
     render() {
-        let data = this.props.data;
+        const data = this.props.data;
         let type = typeof(data);
-        let components = [];
+        const components = [];
         let key = 0;
         switch (type) {
             case 'object':
@@ -24,8 +23,8 @@ class Visualizer extends Component {
                     if (!data.hasOwnProperty(i))
                         continue;
                     components.push(<tr key={key++}>
-                        <td key="0">{i}</td>
-                        <td key="1"><Visualizer data={data[i]}/></td>
+                        <td>{i}</td>
+                        <td><Visualizer data={data[i]}/></td>
                     </tr>);
                 }
                 if (data instanceof Array) {
@@ -35,14 +34,14 @@ class Visualizer extends Component {
                     <table style={style.table} className="Visualizer">
                         <tbody>
                         <tr>
-                            <td> </td>
+                            <td></td>
                             <td style={style.typeWrapper}>{type}</td>
                         </tr>
                         {components}
                         </tbody>
                     </table>);
-            case 'string':
-            case 'number':
+            //case 'string':
+            //case 'number':
             default:
                 return (<span>{data}</span>);
         }

@@ -1,0 +1,17 @@
+{
+  "start": "cosnt var = ",
+  "end": ";",
+
+  "strDelim": "'",
+  "intDelim": "",
+
+  "arrStart": "[",
+  "arrEnd": "]",
+  "arrMid": " ' ",
+  "arrDivider": ",",
+
+  "objStart": "{",
+  "objEnd": "}",
+  "objMid": " : ",
+  "objDivider": ","
+}

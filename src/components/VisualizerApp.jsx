@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Visualizer from './Visualizer.jsx';
+import Visualizer from './Visualizer/Visualizer';
+import TextOutput from './TextOutput/TextOutput';
 
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Button from "@material-ui/core/es/Button/Button";
@@ -80,6 +81,11 @@ class VisualizerApp extends Component {
                         <div style={style.panel}>
                             {format}
                             <Visualizer data={data}/>
+                        </div>
+                    </div>
+                    <div style={style.flexRow}>
+                        <div style={style.panel}>
+                            <TextOutput data={data}/>
                         </div>
                     </div>
                 </Paper>

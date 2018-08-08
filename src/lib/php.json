@@ -1,0 +1,18 @@
+{
+  "indent":"2",
+  "start": "$var = ",
+  "end": ";",
+
+  "strDelim": "'",
+  "intDelim": "",
+
+  "arrStart": "[",
+  "arrEnd": "]",
+  "arrMid": " => ",
+  "arrDivider": ",",
+
+  "objStart": "(object)[",
+  "objEnd": "]",
+  "objMid": " => ",
+  "objDivider": ","
+}
