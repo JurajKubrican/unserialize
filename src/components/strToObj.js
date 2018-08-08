@@ -42,7 +42,7 @@ export default (str) => {
                 } catch (e) {
 
                     try {
-                        parseString(str, function (err, result) {
+                        parseString(str, (_, result) => {
                             data = result;
                         });
                         format = 'xml';

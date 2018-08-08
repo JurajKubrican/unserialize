@@ -1,62 +1,56 @@
-'use strict';
-
-
 import esRules from './es.json'
 import phpRules from './php.json'
-import React from "react";
 
 
-class varWriter {
-
-    data;
-
-    constructor(object) {
-        this.data = object
+const traverse = (data, rules, depth) => {
+    if (data === undefined) {
+        return '';
     }
+    let result = depth ? '' : rules.start;
 
+    switch (data.constructor) {
+        case Array:
+            result += rules.arrStart;
+            result += data.map((data) => {
+                return traverse(data, rules, depth + 1)
+            }, rules, depth).join(rules.arrDivider);
+            result += rules.arrEnd;
+            break;
 
-    traverse(data, rules) {
-
-        let type = typeof(data);
-        let output = '';
-        switch (type) {
-            case 'object':
-                for (let i in data) {
-                    if (!data.hasOwnProperty(i))
-                        continue;
-                    output += `<tr key={key++}>
-                        <td>{i}</td>
-                        <td>` + this.traverse(data[i], phpRules) + `</td>
-                    </tr>`;
+        case Object:
+            result += rules.objStart;
+            for (const key in data) {
+                if (!data.hasOwnProperty(key)) {
+                    continue;
                 }
-                if (data instanceof Array) {
-                    type = 'array';
-                }
-                return (
-                    `<table style={style.table} className="Visualizer">
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td style={style.typeWrapper}>{type}</td>
-                        </tr>
-                        {components}
-                        </tbody>
-                    </table>`;
-            //case 'string':
-            //case 'number':
-            default:
-                return (<span>{data}</span>);
-        }
+                result += rules.objKeyDelim + key + rules.objKeyDelim + rules.objMid + traverse(data[key], rules, depth + 1) + rules.objDivider;
+            }
+            result += rules.objEnd;
+            break;
 
+        case String:
+            result += rules.strDelim + data + rules.strDelim;
+            break;
+
+        case Number:
+            result += rules.intDelim + data + rules.intDelim;
+            break;
     }
 
+    result += depth ? '' : rules.end;
+    return result
+};
 
-    php(data) {
-
-        this.traverse(data, phpRules)
-
-    }
-
-}
+const php = (data) => {
+    return traverse(data, phpRules, 0)
+};
 
 
+const es = (data) => {
+    return traverse(data, esRules, 0)
+};
+
+export {
+    es,
+    php
+};

@@ -6,13 +6,14 @@
   "strDelim": "'",
   "intDelim": "",
 
-  "arrStart": "[",
-  "arrEnd": "]",
+  "arrStart": "[\n",
   "arrMid": " => ",
-  "arrDivider": ",",
+  "arrDivider": ",\n",
+  "arrEnd": "]",
 
-  "objStart": "(object)[",
-  "objEnd": "]",
+  "objStart": "(object)[\n",
   "objMid": " => ",
-  "objDivider": ","
+  "objKeyDelim" : "\"",
+  "objDivider": ",\n",
+  "objEnd": "]"
 }

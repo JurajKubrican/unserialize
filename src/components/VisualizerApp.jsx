@@ -45,6 +45,9 @@ class VisualizerApp extends Component {
     }
 
     fetchUrl() {
+        if (!this.state.url.match(/https?:\/\/\w+/i)) {
+            this.setState({url: 'http://' + this.state.url});
+        }
         fetch('https://wt-kubrican_juraj-gmail_com-0.sandbox.auth0-extend.com/urlBounce?url=' + this.state.url, {
             method: 'GET',
         }).then((response) => {
