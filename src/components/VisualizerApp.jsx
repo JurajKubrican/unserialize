@@ -36,7 +36,7 @@ class VisualizerApp extends Component {
     constructor() {
         super();
         this.state = {
-            url: '',
+            url: 'https://tools.knet.sk/example.xml',
             text: JSON.stringify(exampleData),
         };
 
