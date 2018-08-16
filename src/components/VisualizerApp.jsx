@@ -5,6 +5,7 @@ import TextOutput from './TextOutput/TextOutput';
 import TextField from "@material-ui/core/es/TextField/TextField";
 import Button from "@material-ui/core/es/Button/Button";
 import Paper from "@material-ui/core/es/Paper/Paper";
+import Grid from "@material-ui/core/es/Grid/Grid";
 
 
 import exampleData from './example.json'
@@ -29,6 +30,9 @@ const style = {
     panel: {
         minHeight: '60px',
     },
+    textarea:{
+        width:'100%',
+    }
 };
 
 class VisualizerApp extends Component {
@@ -67,32 +71,36 @@ class VisualizerApp extends Component {
         const [data, format] = strToObj(this.state.text);
 
         return (
-            <div style={style.flexCol}>
-                <Paper>
-                    <div style={style.flexRow}>
-                        <div style={style.flexCol}>
-                            <textarea name={"text"} cols="30" rows="10" onChange={this.handleChange}
+            <Paper>
+                <Grid container spacing={24}>
+                    <Grid item xs={12} sm={4}>
+                        <Grid item sm={4}>
+                            <textarea name={"text"} style={style.textarea} onChange={this.handleChange}
                                       value={this.state.text}/>
-                        </div>
-                        <div style={style.flexCol}>
+                        </Grid>
+                        <Grid item sm={4}>
                             <TextField name={'url'} helperText="URL" value={this.state.url}
                                        onChange={this.handleChange}/>
                             <Button style={style.button} onClick={this.fetchUrl}>Refresh</Button>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <div style={style.flexRow}>
+                            <div style={style.panel}>
+                                {format}
+                                <Visualizer data={data}/>
+                            </div>
                         </div>
-                    </div>
-                    <div style={style.flexRow}>
-                        <div style={style.panel}>
-                            {format}
-                            <Visualizer data={data}/>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <div style={style.flexRow}>
+                            <div style={style.panel}>
+                                <TextOutput data={data}/>
+                            </div>
                         </div>
-                    </div>
-                    <div style={style.flexRow}>
-                        <div style={style.panel}>
-                            <TextOutput data={data}/>
-                        </div>
-                    </div>
-                </Paper>
-            </div>
+                    </Grid>
+                </Grid>
+            </Paper>
         );
     }
 }
