@@ -9,7 +9,7 @@ const getAuthToken = (data) => {
     idToken: data.id_token,
   };
 
-  return JSON.stringify(result);
+  return JSON.stringify(result, null, " ");
 };
 class TextOutput extends Component {
   render() {
