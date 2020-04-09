@@ -1,33 +1,27 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
-import { php, es } from "../../lib/VarWriter.js";
+import { php, es } from '../../lib/VarWriter.js'
 
 const getAuthToken = (data) => {
   const result = {
-    customerId: "customerId",
-    authorization: data.token_type + " " + data.access_token,
+    customerId: 'customerId',
+    authorization: data.token_type + ' ' + data.access_token,
     idToken: data.id_token,
-  };
+  }
 
-  return JSON.stringify(result, null, " ");
-};
+  return JSON.stringify(result, null, ' ')
+}
 class TextOutput extends Component {
   render() {
-    const { data } = this.props;
+    const { data } = this.props
     return (
       <>
         <textarea name="name" cols="50" rows="20" value={php(data)} readOnly />
         <textarea name="name" cols="50" rows="20" value={es(data)} readOnly />
-        <textarea
-          name="name"
-          cols="50"
-          rows="20"
-          value={getAuthToken(data)}
-          readOnly
-        />
+        <textarea name="name" cols="50" rows="20" value={getAuthToken(data)} readOnly />
       </>
-    );
+    )
   }
 }
 
-export default TextOutput;
+export default TextOutput
