@@ -45,4 +45,4 @@ jobs:
 
       - run:
           name: Send Via SFTP
-          command: lftp sftp://${username}:${password}@${hostname} -e "set sftp:auto-confirm yes; mirror -v -R  ./dist ./${sftp_dir}; quit"
+          command: lftp sftp://${username}:${password}@${hostname} -e "set sftp:auto-confirm yes; mirror -v -R  ./build ./${sftp_dir}; quit"
