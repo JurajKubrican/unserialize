@@ -1,15 +1,15 @@
 {
   "name": "unserialize",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.4.3",
+    "@material-ui/core": "^4.9.9",
     "isomorphic-fetch": "^2.2.1",
-    "php-serialize": "^1.3.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-scripts": "^2.0.0-next.b2fd8db8",
-    "xml2js": "^0.4.19"
+    "php-serialize": "^3.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1",
+    "xml2js": "^0.4.23"
   },
   "scripts": {
     "start": "react-scripts start",
