@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import Visualizer from './Visualizer/Visualizer'
 import TextOutput from './TextOutput/TextOutput'
 
-import TextField from '@material-ui/core/es/TextField/TextField'
-import Button from '@material-ui/core/es/Button/Button'
-import Paper from '@material-ui/core/es/Paper/Paper'
-import Grid from '@material-ui/core/es/Grid/Grid'
+import TextField from '@material-ui/core/TextField/TextField'
+import Button from '@material-ui/core/Button/Button'
+import Paper from '@material-ui/core/Paper/Paper'
+import Grid from '@material-ui/core/Grid/Grid'
 
 import exampleData from './example.json'
 

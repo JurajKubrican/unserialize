@@ -1,5 +1,5 @@
-import Serialize from 'php-serialize'
 import { parseString } from 'xml2js'
+import { unserialize } from 'php-serialize'
 
 const htmlspecialcharsDecode = (str) => {
   if (typeof str === 'string') {
@@ -26,11 +26,11 @@ export default (str) => {
       format = 'HTMLSpecialChars + json'
     } catch (e) {
       try {
-        data = Serialize.unserialize(str)
+        data = unserialize(str)
         format = 'php serialized'
       } catch (e) {
         try {
-          data = Serialize.unserialize(htmlspecialcharsDecode(str))
+          data = unserialize(htmlspecialcharsDecode(str))
           format = 'HTMLSpecialChars + php serialized'
         } catch (e) {
           try {
