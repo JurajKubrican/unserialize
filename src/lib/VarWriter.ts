@@ -1,7 +1,7 @@
 import esRules from './es.json'
 import phpRules from './php.json'
 
-const traverse = (data, rules, depth) => {
+const traverse = (data:any, rules:any, depth:number) => {
   if (data === undefined) {
     return ''
   }
@@ -12,7 +12,7 @@ const traverse = (data, rules, depth) => {
       result += rules.arrStart
       result += data
         .map(
-          (data) => {
+          (data:any) => {
             return traverse(data, rules, depth + 1)
           },
           rules,
@@ -53,11 +53,11 @@ const traverse = (data, rules, depth) => {
   return result
 }
 
-const php = (data) => {
+const php = (data:any) => {
   return traverse(data, phpRules, 0)
 }
 
-const es = (data) => {
+const es = (data:any) => {
   return traverse(data, esRules, 0)
 }
 

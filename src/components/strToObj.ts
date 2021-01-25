@@ -1,7 +1,7 @@
 import { parseString } from 'xml2js'
 import { unserialize } from 'php-serialize'
 
-const htmlspecialcharsDecode = (str) => {
+const htmlspecialcharsDecode = (str:string) => {
   if (typeof str === 'string') {
     str = str.replace(/&gt;/gi, '>')
     str = str.replace(/&lt;/gi, '<')
@@ -13,7 +13,7 @@ const htmlspecialcharsDecode = (str) => {
   return str
 }
 
-export default (str) => {
+export const strToObj = (str:string) => {
   let data
   let format
 
